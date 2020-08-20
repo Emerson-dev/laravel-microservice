@@ -19,3 +19,17 @@ $ docker-compose up
 ```
 http://localhost:8000
 ```
+
+## COMANDOS
+
+docker-compose exec app bash
+
+php artisan make:model Models/Category --all
+php artisan make:seeder CategoriesTableSeeder
+php artisan migrate --seed
+php artisan tinker
+\App\Models\Category::all()
+php artisan migrate:refresh --seed
+php artisan migrate:fresh --seed
+php artisan route:list
+php artisan make:request CategoryRequest
