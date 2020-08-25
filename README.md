@@ -33,3 +33,12 @@ php artisan migrate:refresh --seed
 php artisan migrate:fresh --seed
 php artisan route:list
 php artisan make:request CategoryRequest
+
+
+## TEST
+
+vendor/bin/phpunit
+vendor/bin/phpunit --filter CategoryTest
+vendor/bin/phpunit --filter CategoryTest::testExample
+php artisan make:test Models/CategoryTest --unit
+php artisan make:test Models/CategoryTest
