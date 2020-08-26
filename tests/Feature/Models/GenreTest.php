@@ -5,12 +5,14 @@ namespace Tests\Feature\Models;
 use App\Models\Genre;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+use Ramsey\Uuid\Uuid as RamseyUuid;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GenreTest extends TestCase
 {
     use DatabaseMigrations;
+
     /**
      * A basic feature test example.
      *
@@ -34,10 +36,6 @@ class GenreTest extends TestCase
             ],
             $genreKeys
         );
-
-        // $response = $this->get('/');
-
-        // $response->assertStatus(200);
     }
 
     public function testCreate()
@@ -63,6 +61,11 @@ class GenreTest extends TestCase
         ]);
 
         $this->assertTrue($genre->is_active);
+
+        $this->assertNotEmpty($genre->id);
+        $this->assertIsString($genre->id);
+
+        $this->assertTrue(RamseyUuid::isValid($genre->id));
     }
 
     public function testUpdate()
@@ -85,5 +88,20 @@ class GenreTest extends TestCase
         foreach ($data as $key => $value) {
             $this->assertEquals($value, $genre->{$key});
         }
+    }
+
+    public function testDelete()
+    {
+        /**
+         *  @var Genre $genre
+         */
+        $genre = factory(Genre::class)->create([
+            'name' => 'Teste',
+            'is_active' => false
+        ])->first();
+
+        $genre->delete();
+
+        $this->assertSoftDeleted($genre);
     }
 }
