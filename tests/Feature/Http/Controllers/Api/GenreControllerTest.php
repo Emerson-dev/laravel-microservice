@@ -10,10 +10,11 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Support\Facades\Lang;
+use Tests\Traits\TestValidations;
 
 class GenreControllerTest extends TestCase
 {
-    use DatabaseMigrations;
+    use DatabaseMigrations, TestValidations;
 
     public function testIndex()
     {
@@ -69,33 +70,23 @@ class GenreControllerTest extends TestCase
 
     protected function assertinvalidationRequired(TestResponse $response)
     {
+        $this->assertInValidationFields($response, ['name'], 'required');
         $response
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['name'])
-            ->assertJsonMissingValidationErrors(['is_active'])
-            ->assertJsonFragment([
-                Lang::get('validation.required', ['attribute' => 'name'])
-            ]);
+            ->assertJsonMissingValidationErrors(['is_active']);
     }
 
     protected function assertInvalidationMax(TestResponse $response)
     {
+        $this->assertInValidationFields($response, ['name'], 'max.string', ['max' => 255]);
         $response
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['name'])
-            ->assertJsonFragment([
-                Lang::get('validation.max.string', ['attribute' => 'name', 'max' => 255])
-            ]);
+            ->assertJsonValidationErrors(['name']);
     }
 
     protected function assertInvalidationBoolean(TestResponse $response)
     {
+        $this->assertInValidationFields($response, ['is_active'], 'boolean');
         $response
-            ->assertStatus(422)
-            ->assertJsonValidationErrors(['is_active'])
-            ->assertJsonFragment([
-                Lang::get('validation.boolean', ['attribute' => 'is active'])
-            ]);
+            ->assertJsonValidationErrors(['is_active']);
     }
 
     public function testStore()
