@@ -9,6 +9,27 @@ use Illuminate\Support\Facades\Lang;
 
 trait TestValidations
 {
+
+    protected function AssertInValidationStoreAction(
+        array $data,
+        string $rule,
+        $rulesParams = []
+    ) {
+        $response = $this->json('POST', $this->routeStore(), $data);
+        $fields = array_keys($data);
+        $this->assertInValidationFields($response, $fields, $rule, $rulesParams);
+    }
+
+    protected function AssertInValidationupdateAction(
+        array $data,
+        string $rule,
+        $rulesParams = []
+    ) {
+        $response = $this->json('PUT', $this->routeUpdate(), $data);
+        $fields = array_keys($data);
+        $this->assertInValidationFields($response, $fields, $rule, $rulesParams);
+    }
+
     protected function assertInValidationFields(
         TestResponse $response,
         array $fields,
