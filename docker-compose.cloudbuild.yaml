@@ -1,0 +1,71 @@
+version: "3.7"
+
+networks:
+  app-network:
+    driver: bridge
+
+services:
+  nginx:
+    container_name: micro-videos-nginx
+    image: docker_nginx
+    build:
+      context: ./.docker/nginx
+      dockerfile: Dockerfile
+    tty: true
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/var/www
+    depends_on:
+      - app
+    networks:
+      - app-network
+
+  redis:
+    container_name: micro-videos-redis
+    image: redis:alpine
+    expose:
+      - "6379"
+    networks:
+      - app-network
+
+  app:
+    container_name: micro-videos-app
+    image: docker_micro-videos-app
+    build: .
+    # entrypoint: dockerize -template ./.docker/app/.env:.env
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=code_micro_videos
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - _TEST_DB_DATABASE=code_micro_videos_test
+    volumes:
+      - .:/var/www
+    tty: true
+    depends_on:
+      - db
+      - redis
+    networks:
+      - app-network
+
+  db:
+    container_name: micro-videos-db
+    image: docker_micro-videos-db
+    build:
+      context: .docker/mysql
+      dockerfile: Dockerfile
+    command: --innodb-use-native-aio=0
+    environment:
+      - MYSQL_DATABASE=laravel
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=root
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./.docker/mysql/data:/var/lib/mysql
+    tty: true
+    networks:
+      - app-network
