@@ -6,7 +6,7 @@ networks:
 
 services:
   nginx:
-    container_name: micro-videos-nginx
+    container_name: nginx
     image: docker_nginx
     build:
       context: ./.docker/nginx
@@ -22,7 +22,7 @@ services:
       - app-network
 
   redis:
-    container_name: micro-videos-redis
+    container_name: redis
     image: redis:alpine
     expose:
       - "6379"
@@ -30,8 +30,8 @@ services:
       - app-network
 
   app:
-    container_name: micro-videos-app
-    image: docker_micro-videos-app
+    container_name: app
+    image: docker_app
     build: .
     # entrypoint: dockerize -template ./.docker/app/.env:.env
     environment:
@@ -52,8 +52,8 @@ services:
       - app-network
 
   db:
-    container_name: micro-videos-db
-    image: docker_micro-videos-db
+    container_name: db
+    image: docker_db
     build:
       context: .docker/mysql
       dockerfile: Dockerfile
