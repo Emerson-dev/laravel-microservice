@@ -1,8 +1,11 @@
 FROM php:7.3.6-fpm-alpine3.9
 
-RUN apk add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
 RUN apk add --no-cache openssl bash mysql-client nodejs npm
+RUN npm config set cache /var/www/.npm-cache --global
+RUN apk add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
 RUN docker-php-ext-install pdo pdo_mysql
+
+RUN touch /root/.bashrc | echo "PS1='\w\$'" >> /root/.bashrc
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 ENV DOCKERIZE_VERSION v0.6.1
