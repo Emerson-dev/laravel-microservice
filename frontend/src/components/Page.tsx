@@ -1,4 +1,3 @@
-import classes from '*.module.css';
 import { Container, makeStyles, Typography } from '@material-ui/core';
 import * as React from 'react';
 
