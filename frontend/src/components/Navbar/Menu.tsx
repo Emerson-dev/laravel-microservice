@@ -7,7 +7,9 @@ import routes, { MyRouteProps } from '../../routes';
 
 const listRoutes = [
     'dashboard',
-    'categories.list'
+    'categories.list',
+    'membes.list',
+    'genres.list',
 ];
 
 const menuRoutes = routes.filter(route => listRoutes.includes(route.name));
