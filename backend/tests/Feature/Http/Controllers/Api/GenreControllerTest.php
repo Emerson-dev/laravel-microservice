@@ -157,11 +157,15 @@ class GenreControllerTest extends TestCase
 
         $request = Mockery::mock(Request::class);
 
+        $hasError = false;
         try {
             $controller->store($request);
         } catch (TestException $exception) {
             $this->assertCount(1, Genre::all());
+            $hasError = true;
         }
+
+        $this->assertTrue($hasError);
     }
 
     public function testDelete()
