@@ -196,43 +196,6 @@ class VideoControllerTest extends TestCase
         }
     }
 
-    public function testRollbackStore()
-    {
-        $controller = Mockery::mock(VideoController::class)
-            ->makePartial()
-            ->shouldAllowMockingProtectedMethods();
-
-        $controller
-            ->shouldReceive('validate')
-            ->withAnyArgs()
-            ->andReturn($this->sendData);
-
-        $controller
-            ->shouldReceive('rulesStore')
-            ->withAnyArgs()
-            ->andReturn([]);
-
-        $controller->shouldReceive('handleRelations')
-            ->once()
-            ->andThrow(new TestException());
-
-        $request = Mockery::mock(Request::class);
-
-        $request->shouldReceive('get')
-            ->withAnyArgs()
-            ->andReturnNull();
-
-        $hasError = false;
-        try {
-            $controller->store($request);
-        } catch (TestException $exception) {
-            $this->assertCount(1, Video::all());
-            $hasError = true;
-        }
-
-        $this->assertTrue($hasError);
-    }
-
     public function testDelete()
     {
         $response = $this->json('DELETE', route('videos.destroy', ['video' => $this->video->id]), []);
