@@ -53,7 +53,7 @@ class GenreHasCategoriesRule implements Rule
         $categoriesFound = [];
         foreach ($this->genresId as $genreId) {
             $rows = $this->getRows($genreId);
-            if ($rows->count()) {
+            if ($rows->count() === 0) {
                 return false;
             }
             array_push($categoriesFound, ...$rows->pluck('categories_id')->toArray());

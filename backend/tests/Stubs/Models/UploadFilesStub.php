@@ -10,6 +10,8 @@ class UploadFilesStub extends Model
 
     use UploadFiles;
 
+    public static $fileFields = ['filme', 'banner', 'trailer'];
+
     protected function uploadDir()
     {
         return "1";

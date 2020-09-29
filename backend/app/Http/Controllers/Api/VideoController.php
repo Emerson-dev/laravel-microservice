@@ -6,7 +6,6 @@ use App\Http\Resources\VideoResource;
 use App\Models\Video;
 use App\Rules\GenreHasCategoriesRule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class VideoController extends BasicCrudController
 {
@@ -27,6 +26,7 @@ class VideoController extends BasicCrudController
                 'array',
                 'exists:genres,id,deleted_at,NULL'
             ],
+            'video_file' => 'mimetypes:video/mp4|max:20'
         ];
     }
 
@@ -54,7 +54,7 @@ class VideoController extends BasicCrudController
     {
         $categoriesId  = $request->get('categories_id');
         $categoriesId  = is_array($categoriesId) ? $categoriesId  : [];
-        $this->rules['renres_id'][] = new GenreHasCategoriesRule($categoriesId);
+        $this->rules['genres_id'][] = new GenreHasCategoriesRule($categoriesId);
     }
 
     protected function model()
