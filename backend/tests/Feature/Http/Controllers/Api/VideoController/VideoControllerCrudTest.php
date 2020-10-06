@@ -1,46 +1,20 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Api;
+namespace Tests\Feature\Http\Controllers\Api\VideoController;
 
-use App\Http\Controllers\Api\VideoController;
 use App\Models\Category;
 use App\Models\Genre;
-use Tests\TestCase;
 use App\Models\Video;
-use Illuminate\Contracts\Cache\Store;
 use Illuminate\Foundation\Testing\TestResponse;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Mockery;
-use Tests\Exception\TestException;
 use Tests\Traits\TestSaves;
-use Tests\Traits\TestUploads;
 use Tests\Traits\TestValidations;
 
-class VideoControllerTest extends TestCase
+class VideoControllerCrudTest extends BaseVideoControllerTestCase
 {
 
-    use DatabaseMigrations, TestValidations, TestSaves, TestUploads;
-
-    private $video;
-    private $sendData;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->video = factory(Video::class)->create([
-            'opened' => false
-        ]);
-        $this->sendData = [
-            'title' => 'title',
-            'description' => 'description',
-            'year_launched' => 2010,
-            'rating' => Video::RATING_LIST[0],
-            'duration' => 90,
-        ];
-    }
+    use TestValidations, TestSaves;
 
     public function testIndex()
     {
@@ -130,17 +104,6 @@ class VideoControllerTest extends TestCase
         ];
         $this->AssertInValidationStoreAction($data, 'date_format', ['format' => 'Y']);
         $this->AssertInValidationupdateAction($data, 'date_format', ['format' => 'Y']);
-    }
-
-    public function testInvalidationVideoFileField()
-    {
-        $this->assertInvalidationFile(
-            'video_file',
-            'mp4',
-            20,
-            'mimetypes',
-            ['values' => 'video/mp4']
-        );
     }
 
     public function testSaveWitoutFiles()
@@ -243,59 +206,6 @@ class VideoControllerTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJson($this->video->toArray());
-    }
-
-    public function testStoreWithoutFiles()
-    {
-        Storage::fake();
-        $files = $this->getFiles();
-
-        $category =  factory(Category::class)->create();
-        $genre =  factory(Genre::class)->create();
-        $genre->categories()->sync($category->id);
-
-        $response = $this->json(
-            'POST',
-            $this->routeStore(),
-            $this->sendData +
-                [
-                    'categories_id' => [$category->id],
-                    'genres_id' => [$genre->id]
-                ] +
-                $files
-        );
-
-        $response->assertStatus(201);
-        $id = $response->json('id');
-        foreach ($files as $file) {
-            Storage::assertExists("$id/{$file->hashName()}");
-        }
-    }
-    public function testUpdateWithoutFiles()
-    {
-        Storage::fake();
-        $files = $this->getFiles();
-
-        $category =  factory(Category::class)->create();
-        $genre =  factory(Genre::class)->create();
-        $genre->categories()->sync($category->id);
-
-        $response = $this->json(
-            'PUT',
-            $this->routeUpdate(),
-            $this->sendData +
-                [
-                    'categories_id' => [$category->id],
-                    'genres_id' => [$genre->id]
-                ] +
-                $files
-        );
-
-        $response->assertStatus(200);
-        $id = $response->json('id');
-        foreach ($files as $file) {
-            // Storage::assertExists("$id/{$file->hashName()}");
-        }
     }
 
     public function testDelete()
