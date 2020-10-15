@@ -42,3 +42,10 @@ vendor/bin/phpunit --filter CategoryTest
 vendor/bin/phpunit --filter CategoryTest::testExample
 php artisan make:test Models/CategoryTest --unit
 php artisan make:test Models/CategoryTest
+
+
+## GCP SEGURANCA
+
+gcloud init
+
+gcloud kms encrypt --ciphertext-file=./storage/credentials/google/laravel-microservice-a9c4ab9c3805.json.enc --plaintext-file=./storage/credentials/google/laravel-microservice-a9c4ab9c3805.json --location=global --keyring=testing --key=service-account
