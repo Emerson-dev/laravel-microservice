@@ -47,7 +47,7 @@ services:
       - GOOGLE_CLOUD_STORAGE_BUCKET=${GOOGLE_CLOUD_STORAGE_BUCKET}
       - TESTING_PROD=${TESTING_PROD}
     volumes:
-      - .:/var/www/backend
+      - .:/var/www
     tty: true
     depends_on:
       - db
