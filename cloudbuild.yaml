@@ -1,8 +1,24 @@
 steps:
 
+  - id: "Gerando service-account storage"
+    name: 'gcr.io/cloud-builders/gcloud'
+    args:
+        - kms
+        - decrypt
+        - --ciphertext-file=./storage/credentials/google/laravel-microservice-a9c4ab9c3805.json.enc
+        - --plaintext-file=./storage/credentials/google/laravel-microservice-a9c4ab9c3805.json
+        - --location=global
+        - --keyring=testing
+        - --key=service-account
+
   - id: "Rodando docker Compose"
     name: 'gcr.io/$PROJECT_ID/docker-compose:1.25.5'
     args: ['-f', 'docker-compose.cloudbuild.yaml', 'up', '-d']
+    env:
+       - GOOGLE_CLOUD_PROJECT_ID=$PROJECT_ID
+       - GOOGLE_CLOUD_KEY_FILE=laravel-microservice-a9c4ab9c3805.json
+       - GOOGLE_CLOUD_STORAGE_BUCKET=laravel-microservice-video
+       - TESTING_PROD=true
 
   - id: "Rodando Composer"
     name: 'gcr.io/cloud-builders/docker'
@@ -11,6 +27,10 @@ steps:
   - id: "Copiando .env"
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec', '-t', 'app', 'cp', '.env.example', '.env']
+
+  - id: "Copiando .env.testing"
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec', '-t', 'app', 'cp', '.env.testing.example', '.env.testing']
 
   - id: "Rodando key:generate"
     name: 'gcr.io/cloud-builders/docker'
