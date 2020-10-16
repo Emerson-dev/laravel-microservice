@@ -13,7 +13,7 @@ RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --wi
 RUN docker-php-ext-install -j$(nproc) gd
 # RUN apk add --no-cache openssl bash mysql-client nodejs npm
 # RUN npm config set cache /var/www/.npm-cache --global
-# RUN apk add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
+RUN apk add shadow && usermod -u 1000 www-data && groupmod -g 1000 www-data
 
 RUN touch /root/.bashrc | echo "PS1='\w\$'" >> /root/.bashrc
 
@@ -24,8 +24,6 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 
 WORKDIR /var/www
 RUN rm -rf /var/www/html
-
-RUN chmod -R ug+rwx storage bootstrap/cache
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
