@@ -40,6 +40,10 @@ steps:
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec', '-t', 'app', 'php', '/var/www/backend/artisan', 'migrate', '--seed']
 
+  - id: "Rodando cache clean"
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec', '-t', 'app', 'php', '/var/www/backend/artisan', 'cache:clear']
+
   - id: "Rodando phpunit"
     name: 'gcr.io/cloud-builders/docker'
     args: ['exec', '-t', 'app', 'php', '/var/www/backend/vendor/bin/phpunit', '-c', '/var/www/backend/phpunit.xml']
