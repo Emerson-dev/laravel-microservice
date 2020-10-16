@@ -22,15 +22,15 @@ steps:
 
   - id: "Rodando Composer"
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'app', 'cd', './backend','composer', 'install']
+    args: ['exec', '-t', 'app','composer', 'install', '--working-dir', './backend']
 
   - id: "Copiando .env"
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'app', 'cp', '.env.example', '.env']
+    args: ['exec', '-t', 'app', 'cp', './backend/.env.example', './backend/.env']
 
   - id: "Copiando .env.testing"
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'app', 'cp', '.env.testing.example', '.env.testing']
+    args: ['exec', '-t', 'app', 'cp', './backend/.env.testing.example', './backend/.env.testing']
 
   - id: "Rodando key:generate"
     name: 'gcr.io/cloud-builders/docker'
