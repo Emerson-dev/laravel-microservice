@@ -14,12 +14,43 @@ class VideoContollerUploadsTest extends BaseVideoControllerTestCase
 {
     use TestValidations, TestUploads;
 
+    public function testInvalidationThumbField()
+    {
+        $this->assertInvalidationFile(
+            'thumb_file',
+            'jpg',
+            Video::THUMB_FILE_MAX_SIZE,
+            'image'
+        );
+    }
+
+    public function testInvalidationBannerField()
+    {
+        $this->assertInvalidationFile(
+            'banner_file',
+            'jpg',
+            Video::BANNER_FILE_MAX_SIZE,
+            'image'
+        );
+    }
+
+    public function testInvalidationTrailerField()
+    {
+        $this->assertInvalidationFile(
+            'trailer_file',
+            'mp4',
+            Video::TRAILER_FILE_MAX_SIZE,
+            'mimetypes',
+            ['values' => 'video/mp4']
+        );
+    }
+
     public function testInvalidationVideoFileField()
     {
         $this->assertInvalidationFile(
             'video_file',
             'mp4',
-            20,
+            Video::VIDEO_FILE_MAX_SIZE,
             'mimetypes',
             ['values' => 'video/mp4']
         );
@@ -111,7 +142,9 @@ class VideoContollerUploadsTest extends BaseVideoControllerTestCase
     {
         return [
             'video_file' => UploadedFile::fake()->create("video_file.mp4"),
-            'thumb_file' => UploadedFile::fake()->image("thumb_file.jpg")
+            'thumb_file' => UploadedFile::fake()->image("thumb_file.jpg"),
+            'trailer_file' => UploadedFile::fake()->create("trailer_file.mp4"),
+            'banner_file' => UploadedFile::fake()->image("banner_file.jpg")
         ];
     }
 

@@ -5,8 +5,8 @@ steps:
     args:
         - kms
         - decrypt
-        - --ciphertext-file=./storage/credentials/google/laravel-microservice-a9c4ab9c3805.json.enc
-        - --plaintext-file=./storage/credentials/google/laravel-microservice-a9c4ab9c3805.json
+        - --ciphertext-file=./backend/storage/credentials/google/laravel-microservice-a9c4ab9c3805.json.enc
+        - --plaintext-file=./backend/storage/credentials/google/laravel-microservice-a9c4ab9c3805.json
         - --location=global
         - --keyring=testing
         - --key=service-account
@@ -22,24 +22,28 @@ steps:
 
   - id: "Rodando Composer"
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'app', 'composer', 'install']
+    args: ['exec', '-t', 'app','composer', 'install', '--working-dir', '/var/www/backend']
 
   - id: "Copiando .env"
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'app', 'cp', '.env.example', '.env']
+    args: ['exec', '-t', 'app', 'cp', '/var/www/backend/.env.example', '/var/www/backend/.env']
 
   - id: "Copiando .env.testing"
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'app', 'cp', '.env.testing.example', '.env.testing']
+    args: ['exec', '-t', 'app', 'cp', '/var/www/backend/.env.testing.example', '/var/www/backend/.env.testing']
 
   - id: "Rodando key:generate"
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'app', 'php', '/var/www/artisan', 'key:generate']
+    args: ['exec', '-t', 'app', 'php', '/var/www/backend/artisan', 'key:generate']
 
   - id: "Rodando migrations"
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'app', 'php', '/var/www/artisan', 'migrate']
+    args: ['exec', '-t', 'app', 'php', '/var/www/backend/artisan', 'migrate', '--seed']
+
+  - id: "Rodando cache clean"
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['exec', '-t', 'app', 'php', '/var/www/backend/artisan', 'cache:clear']
 
   - id: "Rodando phpunit"
     name: 'gcr.io/cloud-builders/docker'
-    args: ['exec', '-t', 'app', 'php', '/var/www/vendor/bin/phpunit', '-c', '/var/www/phpunit.xml']
+    args: ['exec', '-t', 'app', 'php', '/var/www/backend/vendor/bin/phpunit', '-c', '/var/www/backend/phpunit.xml']
