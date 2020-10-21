@@ -29,8 +29,6 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 RUN ln -s public html
 
-RUN chmod 777 -R /var/www/backend/bootstrap/cache
-
 EXPOSE 9000
 
 ENTRYPOINT ["php-fpm"]
