@@ -18,6 +18,19 @@ class CategoryController extends BasicCrudController
         ];
     }
 
+    // public function index()
+    // {
+    //     $collection = parent::index();
+    //     return CategoryResource::collection($collection);
+    //     // return new CategoryCollection($collection);
+    // }
+
+    // public function show($id)
+    // {
+    //     $obj = parent::show($id);
+    //     return new CategoryResource($obj);
+    // }
+
     protected function model()
     {
         return Category::class;
