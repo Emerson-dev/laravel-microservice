@@ -14,6 +14,10 @@ Microsserviço de catálogo
 $ docker-compose up
 ```
 
+```bash
+$ docker-compose exec app bash
+```
+
 #### Accesse no browser
 
 ```
