@@ -44,7 +44,7 @@ const Table = (props: Props) => {
         const fetchData = async () => {
             const result = await httpVideo.get('cast_members').then(response => response);
 
-            setData(result.data);
+            setData(result.data.data);
         };
         fetchData();
     }, []);

@@ -12,7 +12,20 @@ const columnsDefinition: MUIDataTableColumn[] = [
     },
     {
         name: "categories",
-        label: "Categoria"
+        label: "Categorias",
+        options: {
+            customBodyRender(value, tableMeta, updateValue) {
+                const categories = value.map((category: any, index: number) => {
+                    if (value.length === index + 1) {
+                        return category.name;
+                    } else {
+                        return category.name + ', ';
+                    }
+                });
+
+                return categories;
+            }
+        }
     },
     {
         name: "is_active",
@@ -47,8 +60,7 @@ const Table = (props: Props) => {
     useEffect(() => {
         const fetchData = async () => {
             const result = await httpVideo.get('genres').then(response => response);
-
-            setData(result.data);
+            setData(result.data.data);
         };
         fetchData();
     }, []);
