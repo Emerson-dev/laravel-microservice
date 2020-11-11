@@ -5,7 +5,7 @@ namespace Tests\Feature\Http\Controllers\Api;
 use App\Http\Resources\CastMemberResource;
 use Tests\TestCase;
 use App\Models\CastMember;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\Traits\TestResources;
 use Tests\Traits\TestSaves;

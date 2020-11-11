@@ -5,7 +5,7 @@ namespace Tests\Feature\Http\Controllers\Api\VideoController;
 use Tests\TestCase;
 use App\Models\Video;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Support\Facades\Storage;
 
 class BaseVideoControllerTestCase extends TestCase
