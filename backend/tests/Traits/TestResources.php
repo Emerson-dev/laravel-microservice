@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Traits;
 
 use Exception;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 trait TestResources

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Traits;
 
 use Exception;
-use Illuminate\Foundation\Testing\TestResponse;
+use Illuminate\Testing\TestResponse;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Lang;
 
