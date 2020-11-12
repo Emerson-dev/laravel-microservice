@@ -50,9 +50,9 @@ const Table = (props: Props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            categoryHttp
-                .list<{ data: Category[] }>()
-                .then(({ data }) => setData(data.data));
+            const result = await httpVideo.get('categories').then(response => response);
+
+            setData(result.data.data);
         };
         fetchData();
     }, []);
