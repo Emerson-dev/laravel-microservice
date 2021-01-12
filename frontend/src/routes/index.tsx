@@ -1,8 +1,11 @@
 import { RouteProps } from 'react-router-dom';
 import Dashboard from '../pages/Dashboard';
 import CategoryList from '../pages/category/PageList';
+import CategoryCreate from '../pages/category/PageForm';
 import MemberList from '../pages/member/PageList';
+import MemberCreate from '../pages/member/PageForm';
 import GenreList from '../pages/genre/PageList';
+import GenreCreate from '../pages/genre/PageForm';
 
 export interface MyRouteProps extends RouteProps {
     name: string;
@@ -28,7 +31,7 @@ const routes: MyRouteProps[] = [
         name: 'categories.create',
         label: 'Criar Categoria',
         path: '/categories/create',
-        component: CategoryList,
+        component: CategoryCreate,
         exact: true
     },
     {
@@ -42,7 +45,7 @@ const routes: MyRouteProps[] = [
         name: 'membes.list',
         label: 'Criar Membro',
         path: '/members/create',
-        component: MemberList,
+        component: MemberCreate,
         exact: true
     },
     {
@@ -56,7 +59,7 @@ const routes: MyRouteProps[] = [
         name: 'genres.list',
         label: 'Criar Genero',
         path: '/genres/create',
-        component: GenreList,
+        component: GenreCreate,
         exact: true
     },
 ];
