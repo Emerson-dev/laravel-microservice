@@ -22,7 +22,8 @@ export const Form = () => {
 
     const buttonProps: ButtonProps = {
         className: classes.submit,
-        variant: "outlined"
+        color: 'secondary',
+        variant: "contained"
     };
 
     const { register, handleSubmit, getValues, setValue } = useForm({
@@ -59,8 +60,8 @@ export const Form = () => {
             <FormControl component="fieldset" margin={"normal"}>
                 <FormLabel component="legend">Tipo do membro</FormLabel>
                 <RadioGroup aria-label="type" name="type" value={typeValue} onChange={handleChange}>
-                    <FormControlLabel value="1" control={<Radio />} label="Diretor" inputRef={register} />
-                    <FormControlLabel value="2" control={<Radio />} label="Ator" inputRef={register} />
+                    <FormControlLabel value="1" control={<Radio color={'primary'} />} label="Diretor" inputRef={register} />
+                    <FormControlLabel value="2" control={<Radio color={'primary'} />} label="Ator" inputRef={register} />
                 </RadioGroup>
             </FormControl>
 
